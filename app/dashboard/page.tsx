@@ -1,5 +1,11 @@
-import UserInfo from "@/components/userInfo/UserInfo";
+import Board from "@/components/board/Board";
+import DashBoard from "@/components/dashboard/DashBoard";
 
 export default function Dashboard() {
-  return <UserInfo />;
+  return (
+    <main>
+      <DashBoard />
+      <Board />
+    </main>
+  );
 }

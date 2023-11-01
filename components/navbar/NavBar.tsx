@@ -23,7 +23,7 @@ const NavBar = () => {
         <Image
           src="/logo.png"
           alt="Dev_Plan_Pro_logo"
-          width={150}
+          width={100}
           height={100}
         />
         {session ? (
