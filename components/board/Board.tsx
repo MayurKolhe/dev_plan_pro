@@ -75,10 +75,15 @@ const Board = () => {
         id: finishCol.id,
         todos: finishTodos,
       });
+
+      console.log('todoMoved', todoMoved )
+      console.log('finishCol.id', finishCol.id )
+
       updateDataBase(todoMoved, finishCol.id);
       setBoardState({ ...board, columns: newColumns });
     }
   };
+
   return (
     <DragDropContext onDragEnd={handleOnDragEnd}>
       <Droppable droppableId="board" direction="horizontal" type="column">

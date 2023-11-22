@@ -17,7 +17,7 @@ const DashBoard = () => {
     blur-3xl
     opacity-50
     -z-50" />
-      <p className=" flex items-center text-sm font-light p-5 pr-5 shadow-xl rounded-xl w-fit bg-white italic max-w-3xl text-[#d19200]">
+      <p className=" flex items-center text-sm font-light p-5 pr-5 shadow-xl rounded-xl w-fit bg-white italic max-w-3xl text-[#d19200]" >
         <UserCircleIcon className="inline-block h-10 w-10 text-[#d19200] mr-2" />
         GPT is summmerising your tasks for the day.....
       </p>

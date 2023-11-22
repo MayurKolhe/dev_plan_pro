@@ -1,3 +1,26 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.bottom-left-image {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 350px; /* Adjust width as needed */
+    height: auto; /* Maintain aspect ratio */
+  }
+  
+  .bottom-right-image {
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    width: 350px; /* Adjust width as needed */
+    height: auto; /* Maintain aspect ratio */
+  }
+
+  .register{
+   
+    top:-200px;
+    width:35%;
+    position:relative;
+  }

@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useState } from "react";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 
 
 export default function LoginForm() {
@@ -32,6 +33,7 @@ export default function LoginForm() {
         }
         return;
       }
+      
       router.replace("dashboard");
     } catch (error) {
       console.log(error);
@@ -41,7 +43,7 @@ export default function LoginForm() {
   return (
     <div
       className="flex justify-center items-center h-screen">
-      <div className="shadow-lg p-5 rounded-lg border-t-4 border-green-400">
+      <div className=" register shadow-lg p-5 rounded-lg border-t-4 border-blue-400">
         <h1 className="text-xl font-bold my-4">Login</h1>
 
         <form
@@ -58,7 +60,7 @@ export default function LoginForm() {
             type="password"
             placeholder="Password"
           />
-          <button className="bg-green-600 text-white font-bold cursor-pointer px-6 py-2">
+          <button className="bg-blue-600 text-white font-bold cursor-pointer px-6 py-2">
             Login
           </button>
           {error && (
@@ -71,7 +73,12 @@ export default function LoginForm() {
             Don`t have an account? <span className="underline">Register</span>
           </Link>
         </form>
+
       </div>
+      <Image src="/sign-up-left.svg" className="bottom-left-image" alt="Image 1"           width={500}
+          height={500}/>
+  <Image src="/sign-up-right.svg" className="bottom-right-image" alt="Image 2"          width={500}
+          height={500}/>
     </div>
   );
 }
