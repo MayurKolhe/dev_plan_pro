@@ -75,7 +75,7 @@ export default function RegisterPage() {
           />
           <input
             onChange={(e) => setEmail(e.target.value)}
-            type="text"
+            type="email"
             placeholder="Email"
           />
           <input

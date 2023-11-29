@@ -39,7 +39,7 @@ const Column = ({ id, todos, index }: Props) => {
                   {idToCol[id]}
                   <span className="text-gray-500 bg-gray-200 rounded-full px-4 py-1 text-sm font-normal">{todos.length}</span>
                 </h2>
-                <div className="space-x-2">
+                <div className="space-x-5">
                   {todos.map((todo, index) => (
                     <Draggable key={todo.$id}
                       draggableId={todo.$id}
