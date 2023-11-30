@@ -1,7 +1,7 @@
 "use client";
 
 import { useBoardStore } from "@/store/BoardStore";
-import { TaskType } from "@/types";
+import { TaskType } from "@/typings";
 import { RadioGroup } from "@headlessui/react";
 import { CheckCircleIcon } from "@heroicons/react/24/solid";
 
@@ -27,13 +27,20 @@ const types: TaskType[] = [
     color: "bg-yellow-500",
     ringColor: "ring-offset-yellow-300",
   },
+  {
+    id: "block",
+    name: "Block",
+    description: "A task that is currently being worked on",
+    color: "bg-blue-500",
+    ringColor: "ring-offset-blue-300",
+  },
 
 ];
 
 function TaskGroup() {
   const [newTaskType, setNewTaskType] = useBoardStore((state) => [
-    state.newTask,
-    state.setNewTask,
+    state.newTaskType,
+    state.setNewTaskType,
   ]);
 
   return (

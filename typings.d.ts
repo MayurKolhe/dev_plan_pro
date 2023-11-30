@@ -1,4 +1,4 @@
-export {Board , TypedCol , Col, NotStarted}
+export {Board , TypedCol , Col, NotStarted,TaskType, Image }
 
 interface Board {
   columns: Map<TypedCol, Col>;
@@ -15,11 +15,18 @@ interface NotStarted {
     $id: string;
     title: string;
     status: TypedCol;
-    image?: Image;
+    Image?: string;
     createdAt: string;
 }
 
 interface Image {
-    id: string;
-    fileId: string;
+   name: string
+}
+
+interface TaskType {
+  id: TypedCol,
+  name: string,
+  description: string,
+  color: string,
+  ringColor: string,
 }

@@ -9,13 +9,13 @@ import TaskGroup from '../TaskGroup/TaskGroup';
 import { PhotoIcon } from "@heroicons/react/24/solid";
 
 function Modal() {
-  const  [image,setImage, convertImage, newTask,setNewTask, newTaskType]= useBoardStore((state)=>
+  const  [image,setImage, newTask,setNewTask, newTaskType,addTask]= useBoardStore((state)=>
   [ state.image,
     state.setImage,
-    state.convertImage,
     state.newTask,
     state.setNewTask,
     state.newTaskType,
+    state.addTask,
     
   ])
   let [isOpen, closeModal] = useModalStore((state)=>
@@ -28,8 +28,8 @@ function Modal() {
 
     if (!newTask) return;
 
-   // addTask(newTask, newTaskType, image);
-    setImage(null);
+    addTask(newTask, newTaskType, image);
+    setImage(image);
     closeModal();
   };
 
@@ -39,6 +39,7 @@ function Modal() {
       <Dialog 
       as="form"
       className="relative z-10"
+      onSubmit={handleSubmit}
       onClose={closeModal}>
         {/*
           Use one Transition.Child to apply one transition to the backdrop...
@@ -120,7 +121,6 @@ function Modal() {
                     onChange={(e) => {
                       if (!e.target.files![0].type.startsWith("image/")) return;
                       setImage(e.target.files![0]);
-                      convertImage(e.target.files![0])
                     }}
                   />
                 </div>

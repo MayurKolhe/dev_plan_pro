@@ -11,8 +11,8 @@ const todoSchema = new Schema(
 
 export interface Todos extends Document {
   title: string;
-  status?: string;
-  Image?: string;
+  status: string;
+  Image: string;
 }
 
 const Todos = models.Todos || mongoose.model("Todos", todoSchema);

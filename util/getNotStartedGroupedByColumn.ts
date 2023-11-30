@@ -15,7 +15,7 @@ export const getNotStartedGroupedByColumn = async () => {
             throw new Error("Failed to fetch data");
           }
           const data = await res.json();
-          console.log('data', data)
+          console.log('data')
           return data;
         } catch (error) {
           console.error(error);
@@ -36,14 +36,14 @@ export const getNotStartedGroupedByColumn = async () => {
   const resultMap = new Map<TypedCol, Col>();
   
   // Process each JSON response in the array
-  jsonResponseArray.forEach((jsonResponse: { _id: any, status: any; image?: any, title: any; createdAt: any; }) => {
+  jsonResponseArray.forEach((jsonResponse: { _id: any, status: any; Image?: any, title: any; createdAt: any; }) => {
     console.log('jsonResponse',jsonResponse)
-    const { _id, title, status, image, createdAt } = jsonResponse;
+    const { _id, title, status, Image, createdAt } = jsonResponse;
     const typedColStatus: TypedCol = status as TypedCol;
     
   
     // Create the NotStarted object
-    const notStartedObj: NotStarted = { $id: jsonResponse._id, title, status: typedColStatus, image ,createdAt };
+    const notStartedObj: NotStarted = { $id: jsonResponse._id, title, status: typedColStatus, Image ,createdAt };
   
     // Check if there's an existing entry with the same status
     const existingEntry = resultMap.get(typedColStatus);
