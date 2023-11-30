@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import './globals.css'
 import { AuthProvider } from './provider'
 import NavBar from '@/components/navbar/NavBar'
+import Modal from '@/components/Modal/Modal'
 
 export const metadata: Metadata = {
   title: 'Dev Plan Pro',
@@ -19,6 +20,7 @@ export default function RootLayout({
         <AuthProvider>
           <NavBar/>
           {children}
+          <Modal/>
         </AuthProvider>
       </body>
     </html>

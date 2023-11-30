@@ -2,6 +2,9 @@ import { NotStarted, TypedCol } from "@/typings";
 import { PlusCircleIcon } from "@heroicons/react/24/outline";
 import { Draggable, Droppable } from "react-beautiful-dnd";
 import TodoCard from "../todocard/TodoCard";
+import { useBoardStore } from "@/store/BoardStore";
+import { useModalStore } from "@/store/ModalStore";
+
 
 type Props = {
   id: TypedCol;
@@ -11,12 +14,16 @@ type Props = {
 const idToCol: {
   [key in TypedCol]: string;
 } = {
-  "notstarted": "To DO",
+  "notstarted": "To Do",
   "inprogress": "In Progress",
   "done": "Done",
   "block":"Block"
 }
 const Column = ({ id, todos, index }: Props) => {
+
+const [searchText]=useBoardStore((state)=>[state.searchText])
+const openCard= useModalStore((state)=>state.openModal)
+
   return (
     <Draggable draggableId={id} index={index}>
       {(provided) => (
@@ -37,10 +44,21 @@ const Column = ({ id, todos, index }: Props) => {
               >
                 <h2 className="flex justify-between font-bold text-xl p-2">
                   {idToCol[id]}
-                  <span className="text-gray-500 bg-gray-200 rounded-full px-4 py-1 text-sm font-normal">{todos.length}</span>
+                  <span className="text-gray-500 bg-gray-200 rounded-full px-4 py-1 text-sm font-normal">{
+                  !searchText? todos.length :todos.filter(
+                    (todo)=> todo.title.toLowerCase()
+                    .includes(searchText.toLowerCase())).length}</span>
                 </h2>
-                <div className="space-x-5">
-                  {todos.map((todo, index) => (
+                <div className="space-x-2">
+                  {todos.map((todo, index) => {
+                    if (
+                      searchText &&
+                      !todo.title.toLowerCase().includes(searchText.toLowerCase())
+                    )
+                      return null;
+
+
+                    return(
                     <Draggable key={todo.$id}
                       draggableId={todo.$id}
                       index={index}>
@@ -55,10 +73,14 @@ const Column = ({ id, todos, index }: Props) => {
                         />
                       )}
                     </Draggable>
-                  ))}
+                  );
+                }
+                  )}
                   {provided.placeholder}
                   <div className="flex items-end justify-end p-2">
-                    <button className="text-green-500 hover:text-green-600">
+                    <button 
+                    onClick={openCard}
+                    className="text-green-500 hover:text-green-600">
                       <PlusCircleIcon className="h-10 w-10"/>
                     </button>
                   </div>

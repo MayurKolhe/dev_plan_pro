@@ -5,6 +5,7 @@ import Image from "next/image";
 import React, { useState } from "react";
 import { useSession } from "next-auth/react";
 import { signOut } from "next-auth/react";
+import { useBoardStore } from "@/store/BoardStore";
 
 const NavBar = () => {
   const { data: session } = useSession();
@@ -17,6 +18,13 @@ const NavBar = () => {
   const handleLogout = async () => {
     await signOut(); // Perform the logout action using NextAuth.js
   };
+  const [searchText, setSearch] = useBoardStore((state) => [
+  state.searchText,
+  state.setSearch,
+]);
+  
+  
+
   return (
     <header>
       <div className="flex flex-col md:flex-row items-center p-3 bg-gray-500/10 rounded-b-2xl">
@@ -35,6 +43,8 @@ const NavBar = () => {
                 type="text"
                 placeholder="Search"
                 className="flex-1 outline-none p-3"
+                value={searchText}
+                onChange={(e)=>setSearch(e.target.value)}
               />
               <button type="submit" hidden>
                 Search

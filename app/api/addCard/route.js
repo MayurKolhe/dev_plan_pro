@@ -7,15 +7,14 @@ import { doesNotMatch } from "assert";
 
 export async function POST(req) {
     try {
-        const { name, email, password } = await req.json();
-        const hashedPassword = await bcrypt.hash(password, 15);
+
+        const { title, status, Image } = await req.json();
+       
         await connectToDatabase();
 
-        await Users.create({ name, email, password: hashedPassword});
+        await Todos.create({ title, status, Image});
             
-        //await Todos.create({title:"Title2",status:"done",Image:"null"})
-
-        return NextResponse.json({ message: "User registered Successfully" }, { status: 201 });
+        return NextResponse.json({ message: "Todos Created Successfully "}, { status: 200});
     } catch (error) {
         return NextResponse.json({ message: error }, { status: 500 });
     }

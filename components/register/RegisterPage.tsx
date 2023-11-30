@@ -1,8 +1,10 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import {useRouter} from "next/navigation";
 import { useState } from "react";
+
 
 export default function RegisterPage() {
   const [name, setName] = useState("");
@@ -64,7 +66,7 @@ export default function RegisterPage() {
 
   return (
     <div className="grid place-items-center h-screen">
-      <div className="shadow-lg p-5 rounded-lg border-t-4 border-green-400">
+      <div className=" register shadow-lg p-5 rounded-lg border-t-4 border-blue-500">
         <h1 className="text-xl font-bold my-4">Register</h1>
 
         <form onSubmit={handleSubmit} className="flex flex-col gap-3">
@@ -83,7 +85,7 @@ export default function RegisterPage() {
             type="password"
             placeholder="Password"
           />
-          <button className="bg-green-600 text-white font-bold cursor-pointer px-6 py-2">
+          <button className="bg-blue-600 text-white font-bold cursor-pointer px-6 py-2">
             Register
           </button>
 
@@ -98,6 +100,10 @@ export default function RegisterPage() {
           </Link>
         </form>
       </div>
+      <Image src="/sign-up-left.svg" className="bottom-left-image" alt="Image 1"           width={500}
+          height={500}/>
+  <Image src="/sign-up-right.svg" className="bottom-right-image" alt="Image 2"          width={500}
+          height={500}/>
     </div>
   );
 }
