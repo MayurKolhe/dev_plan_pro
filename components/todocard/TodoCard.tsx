@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import { NotStarted, TypedCol } from "@/typings";
 import { XCircleIcon } from "@heroicons/react/24/outline";
@@ -23,16 +23,24 @@ const TodoCard = ({
   draggableProps,
   dragHandleProps,
 }: Props) => {
-    return <div
-    className="bg-white rounded-md space-y-20 drop-shadow-md"
-        {...draggableProps} {...dragHandleProps} ref={innerRef}>
-        <div className="flex justify-between items-center p-5">
-            <p>{todo.title}</p>
-            <button className="text-rose-500 hover:text-rose-600">
-                <XCircleIcon className="ml-5 h-8 w-8"/>
-            </button>
-        </div>
-        </div>;
+  const cardClass =
+    id === "block" ? "bg-red-500" : id === "done" ? "bg-green-500" : "bg-white";
+
+  return (
+    <div
+      className={`mt-1 rounded-md space-y-20 drop-shadow-md ${cardClass}`}
+      {...draggableProps}
+      {...dragHandleProps}
+      ref={innerRef}
+    >
+      <div className="flex justify-between items-center p-5">
+        <p>{todo.title}</p>
+        <button className="text-rose-500 hover:text-rose-600">
+          <XCircleIcon className="ml-5 h-8 w-8" />
+        </button>
+      </div>
+    </div>
+  );
 };
 
 export default TodoCard;
