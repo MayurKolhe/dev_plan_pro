@@ -18,10 +18,12 @@ const NavBar = () => {
   const handleLogout = async () => {
     await signOut(); // Perform the logout action using NextAuth.js
   };
-const [searchText, setSearch]= useBoardStore((state)=>[
+  const [searchText, setSearch] = useBoardStore((state) => [
   state.searchText,
   state.setSearch,
 ]);
+  
+  
 
   return (
     <header>
