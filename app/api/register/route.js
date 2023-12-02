@@ -12,10 +12,9 @@ export async function POST(req) {
         await connectToDatabase();
 
         await Users.create({ name, email, password: hashedPassword});
-            
-        //await Todos.create({title:"Title2",status:"done",Image:"null"})
 
-        return NextResponse.json({ message: "User registered Successfully" }, { status: 201 });
+        return NextResponse.json({ message: id}, { status: 201 });
+
     } catch (error) {
         return NextResponse.json({ message: error }, { status: 500 });
     }

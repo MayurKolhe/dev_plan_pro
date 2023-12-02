@@ -12,7 +12,7 @@ export async function POST(req: Request) {
         messages: [
             {
                 role: "system",
-                content: `When responding, welcome the user always as Mr.Mayur and say welcome to the PAPAFAM Todo App! Limit the response to 200 characters`,
+                content: `When responding, welcome the user always as say welcome to the DevPlanProApp! Limit the response to 200 characters`,
             },
             {
                 role: "user",

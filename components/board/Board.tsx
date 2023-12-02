@@ -76,9 +76,6 @@ const Board = () => {
         todos: finishTodos,
       });
 
-      console.log('todoMoved', todoMoved )
-      console.log('finishCol.id', finishCol.id )
-
       updateDataBase(todoMoved, finishCol.id);
       setBoardState({ ...board, columns: newColumns });
     }
