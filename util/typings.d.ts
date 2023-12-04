@@ -16,7 +16,7 @@ interface NotStarted {
     title: string;
     status: TypedCol;
     image?: Image;
-    user:string;
+    boardID?:string;
     createdAt: string;
 }
 

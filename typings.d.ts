@@ -1,10 +1,19 @@
-export {Board , TypedCol , Col, NotStarted,TaskType, Image }
+export {Board , TypedCol , Col, NotStarted,TaskType, Image, BoardObject }
 
 interface Board {
   columns: Map<TypedCol, Col>;
 }
 
-type TypedCol = "notstarted" | "inprogress" | "done" | "block";
+interface BoardObject {
+  _id: string;
+  name: string;
+  email: string;
+  createdAt:string;
+  updatedAt: string;
+
+}
+
+type TypedCol = "notstarted" | "inprogress" | "done" | "block" ;
 
 interface Col {
   id: TypedCol;
@@ -16,7 +25,7 @@ interface NotStarted {
     title: string;
     status: TypedCol;
     Image?: string;
-    user: string;
+    boardID?: string |undefined;
     createdAt: string;
 }
 

@@ -1,15 +1,15 @@
 import { connectToDatabase } from "@/util/mongodb";
-import Todos from '@/models/todo';
+import Boards from '@/models/boards';
 import { NextResponse } from 'next/server';
 
 export async function GET(request) {
   try {
     await connectToDatabase();
     const url = new URL(request.url);
-    const boardID = url.searchParams.get('email');
+    const email = url.searchParams.get('email');
 
     // Query the database for the user
-    const user = await Todos.find({ "boardID": boardID });
+    const user = await Boards.find({ "email": email });
 
     if (!user) {
       console.log('user is not there');

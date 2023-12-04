@@ -51,17 +51,6 @@ export default function LoginForm() {
 
       };
 
-  
-
-      
-      
-
-     
-
-
-              
-      
-
   return (
     <div
       className="flex justify-center items-center h-screen">
