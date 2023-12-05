@@ -62,6 +62,7 @@ const BoardList: React.FC = () => {
     console.log("Fetching todo cards for board:", boardId);
     setSelectedBoard(boardId);
     setBoardName(name);
+    setIsSidePanelOpen(false);
   };
 
   const handleDeleteBoard = (event: React.MouseEvent, boardId: string) => {

@@ -32,8 +32,8 @@ const DashBoard = () => {
       w-full
       h-96
       bg-gradient-to-br
-    from-pink-400
-    to-[#FF9933]
+    from-blue-500
+    to-[#2b2c37]
     rounded-md
     filter
     blur-3xl

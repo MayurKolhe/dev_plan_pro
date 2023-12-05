@@ -13,7 +13,7 @@ export async function POST(req: Request) {
         role: "system",
         content: `When responding, welcome the user always as say welcome ${JSON.stringify(
           userName
-        )} to the DevPlanProApp! Limit the response to 200 characters`,
+        ).toUpperCase()} to the DevPlanProApp! Limit the response to 200 characters`,
       },
       {
         role: "user",
