@@ -10,7 +10,7 @@ const DashBoard = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [givenSuggestion, setgivenSuggestion] = useState<string>("");
   const { data: session } = useSession();
-  const userName = session?.user?.name;
+  const userName: string = session?.user?.name ?? "";
 
   useEffect(() => {
     if (board.columns.size === 0) return;
@@ -21,7 +21,7 @@ const DashBoard = () => {
       setLoading(false);
     };
     givenSuggestionFunc();
-  }, [board]);
+  }, [board , userName]);
 
   return (
     <div className="flex items-center justify-center px-5 py-3 md:py-5">
