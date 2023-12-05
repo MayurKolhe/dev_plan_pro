@@ -1,38 +1,46 @@
-// SideButton.tsx
-import React, { useState } from 'react';
-import BoardList from '../BoardList/BoardList';
-import { useBoardStore } from '@/store/BoardStore';
+import React from "react";
+import BoardList from "../BoardList/BoardList";
+import { useBoardStore } from "@/store/BoardStore";
+import hideSidebarIcon from "@/public/icon-hide-sidebar.svg";
+import showSidebarIcon from "@/public/icon-show-sidebar.svg";
+import Image from "next/image";
 
 const SideBar: React.FC = () => {
+  const [isSidePanelOpen, setIsSidePanelOpen] = useBoardStore((state) => [
+    state.isSidePanelOpen,
+    state.setIsSidePanelOpen,
+  ]);
 
-  const  [isSidePanelOpen,setIsSidePanelOpen]= useBoardStore((state)=> [ state.isSidePanelOpen,
-    state.setIsSidePanelOpen
-])
-
-  const openSidePanel = () => {
-    setIsSidePanelOpen(true);
-  };
-
-  const closeSidePanel = () => {
-    setIsSidePanelOpen(false);
+  const toggleSidePanel = () => {
+    setIsSidePanelOpen(!isSidePanelOpen);
   };
 
   return (
     <div>
       <div
-        className="flex items-baseline space-x-2 mr-8 rounded-r-full duration-500 ease-in-out cursor-pointer text-[#635fc7] px-5 py-4 hover:bg-[#635fc71a] hover:text-[#635fc7] dark:hover:bg-white"
-        onClick={openSidePanel}
+        className={`flex items-center space-x-2 p-4 rounded-r-full duration-500 ease-in-out cursor-pointer text-[#635fc7] hover:bg-[#635fc71a] hover:text-[#635fc7] dark:hover:bg-white ${
+          isSidePanelOpen
+            ? `min-w-[261px] bg-white dark:bg-[#2b2c37]  fixed top-[100px] h-200 py-10  items-center left-0 z-20`
+            : ` bg-[#635FC7] dark:bg-[#2b2c37] dark:hover:bg-[#635FC7] top-auto bottom-10 justify-center items-center hover:opacity-80 cursor-pointer  p-0 transition duration-300 transform fixed felx w-[56px] h-[48px] rounded-r-full`
+        }`}
+        onClick={toggleSidePanel}
       >
-        <img src="/icon-show-sidebar.svg" className="h-4 filter-white" />
-        <p className="text-lg font-bold">Open Boards</p>
+        <Image
+          src={isSidePanelOpen ? hideSidebarIcon : showSidebarIcon}
+          alt={isSidePanelOpen ? "Hide Boards Icon" : "Open Boards Icon"}
+          width={10}
+          height={10}
+          className="filter-white"
+        />
+        {isSidePanelOpen && <p className="font-bold text-base">Hide Boards</p>}
       </div>
       {isSidePanelOpen && (
-        <div className="fixed top-0 right-0 h-full w-64 bg-white p-4 shadow-lg">
-          <div className="mb-4">
-            <button onClick={closeSidePanel}>Close</button>
+        <div className="bg-white dark:bg-[#2b2c37] fixed h-screen items-center z-20 transform translate-x-0 transition-transform duration-300 ease-in-out">
+          <div className="w-full py-4 rounded-xl">
+            <h3 className="dark:text-gray-300 text-gray-600 font-semibold mx-4 mb-8">
+              <BoardList />
+            </h3>
           </div>
-          <BoardList />
-   
         </div>
       )}
     </div>

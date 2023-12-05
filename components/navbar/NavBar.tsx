@@ -2,18 +2,15 @@
 import Avatar from "react-avatar";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import Image from "next/image";
-import darkIcon from "@/public/icon-dark-theme.svg";
-import lightIcon from "@/public/icon-light-theme.svg";
-import React, { Dispatch, useState } from "react";
-import { Switch } from "@headlessui/react";
+import React, { useState } from "react";
 import { useSession } from "next-auth/react";
 import { signOut } from "next-auth/react";
 import { useBoardStore } from "@/store/BoardStore";
-import  {useDarkMode, toggleDarkMode} from "@/store/useDarkMode";
 
 const NavBar = () => {
   const { data: session } = useSession();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const { boardName } = useBoardStore();
 
   const handleAvatarClick = () => {
     setIsDropdownOpen(!isDropdownOpen);
@@ -23,32 +20,9 @@ const NavBar = () => {
     await signOut(); // Perform the logout action using NextAuth.js
   };
   const [searchText, setSearch] = useBoardStore((state) => [
-  state.searchText,
-  state.setSearch,
-]);
-
- //const [colorTheme, setTheme] = useDarkMode();
-
-
-
-// const toggleDarkMode = (checked) => {
-//   setTheme(colorTheme);
-//   setDarkSide(checked);
-// };
-
-// const [checked, setChecked] = useState(false);
-//   const [colorTheme, setTheme] = useDarkMode();
-
-//   const [darkSide, setDarkSide] = useState(
-//     colorTheme === "light" ? true : false
-//   );
-
-//   const handleToggle = () => {
-//     toggleDarkMode(checked, setTheme);
-//     setChecked(!checked);
-//   };
-  
-  
+    state.searchText,
+    state.setSearch,
+  ]);
 
   return (
     <header>
@@ -82,8 +56,11 @@ const NavBar = () => {
 
                   <img src={darkIcon} alt="moon indicating dark mode" />
                 </div> */}
-
-
+            <div className=" flex items-center ">
+              <h3 className="truncate max-w-[400px] text-2xl font-extrabold ml-20 font-serif">
+                {boardName}
+              </h3>
+            </div>
 
             <form className="flex items-center space-x-4 bg-white rounded-md p-2 shadow-md flex-auto md:flex-initial">
               <MagnifyingGlassIcon className="h-6 w-6 text-red-400" />
@@ -92,7 +69,7 @@ const NavBar = () => {
                 placeholder="Search"
                 className="flex-1 outline-none p-3"
                 value={searchText}
-                onChange={(e)=>setSearch(e.target.value)}
+                onChange={(e) => setSearch(e.target.value)}
               />
               <button type="submit" hidden>
                 Search
