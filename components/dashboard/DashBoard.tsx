@@ -1,6 +1,7 @@
 import { useBoardStore } from "@/store/BoardStore";
 import fetchGivenSuggestions from "@/util/fetchGivenSuggestions";
 import { UserCircleIcon } from "@heroicons/react/24/outline";
+import { useSession } from "next-auth/react";
 import React, { useEffect, useState } from "react";
 
 const DashBoard = () => {
@@ -8,12 +9,14 @@ const DashBoard = () => {
 
   const [loading, setLoading] = useState<boolean>(false);
   const [givenSuggestion, setgivenSuggestion] = useState<string>("");
+  const { data: session } = useSession();
+  const userName = session?.user?.name;
 
   useEffect(() => {
     if (board.columns.size === 0) return;
     setLoading(true);
     const givenSuggestionFunc = async () => {
-      const givenSuggestion = await fetchGivenSuggestions(board);
+      const givenSuggestion = await fetchGivenSuggestions(board, userName);
       setgivenSuggestion(givenSuggestion);
       setLoading(false);
     };

@@ -6,18 +6,18 @@ import { RadioGroup } from "@headlessui/react";
 import { CheckCircleIcon } from "@heroicons/react/24/solid";
 
 const types: TaskType[] = [
-    {
-        id: "done",
-        name: "Done",
-        description: "A task that has been completed",
-        color: "bg-green-500",
-        ringColor: "ring-offset-green-300",
-      },
+  {
+    id: "done",
+    name: "Done",
+    description: "A task that has been completed",
+    color: "bg-green-500",
+    ringColor: "ring-offset-green-300",
+  },
   {
     id: "notstarted",
     name: "Todo",
     description: "A new task to be completed",
-    color: "bg-red-500",
+    color: "bg-orange-500",
     ringColor: "ring-offset-red-300",
   },
   {
@@ -30,11 +30,10 @@ const types: TaskType[] = [
   {
     id: "block",
     name: "Block",
-    description: "A task that is currently being worked on",
-    color: "bg-blue-500",
+    description: "A task that is currently being Blocked",
+    color: "bg-red-500",
     ringColor: "ring-offset-blue-300",
   },
-
 ];
 
 function TaskGroup() {
