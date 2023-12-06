@@ -54,7 +54,7 @@ const BoardList: React.FC = () => {
     console.log("Creating board:", boardName);
     // setIsSidePanelOpen(false); // Close the side panel after creating a new board
     CreateBoard(boardName);
-    setKey((prevKey) => prevKey + 1); // Increment key to force remounting CreateModal
+    setKey((prevKey) => prevKey + 1);
     getBoard();
   };
 
@@ -62,10 +62,9 @@ const BoardList: React.FC = () => {
     console.log("Fetching todo cards for board:", boardId);
     setSelectedBoard(boardId);
     setBoardName(name);
-    setIsSidePanelOpen(false);
   };
 
-  const handleDeleteBoard = (event: React.MouseEvent, boardId: string) => {
+  const handleDeleteBoard = (event: React.MouseEvent<Element, MouseEvent> , boardId: string) => {
     event.stopPropagation();
     setconfirmDeleteBoard(true);
     setDeleteID(boardId);
@@ -117,7 +116,7 @@ const BoardList: React.FC = () => {
                   src={boradDeleteIcon}
                   className="h-4 w-4 filter-black border-2px #fff bg-hover-white rounded-full hover:filter-black hover:border-[#635fc7] hover:bg-[#635fc71a] dark:hover:bg-black dark:hover:border-[#635fc7] dark:hover:filter-white"
                   alt="board_Delete_icons"
-                  onClick={() => handleDeleteBoard(event, board._id)}
+                  onClick={(event) => handleDeleteBoard(event, board._id)}
                   style={{ cursor: "pointer" }}
                 />
               </div>

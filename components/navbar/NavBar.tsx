@@ -2,7 +2,7 @@
 import Avatar from "react-avatar";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import Image from "next/image";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import { signOut } from "next-auth/react";
 import { useBoardStore } from "@/store/BoardStore";
@@ -10,7 +10,16 @@ import { useBoardStore } from "@/store/BoardStore";
 const NavBar = () => {
   const { data: session } = useSession();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const { boardName } = useBoardStore();
+  const { currentBoardName, setBoardName } = useBoardStore();
+
+  useEffect(() => {
+    console.log("currentBoardName   ",  currentBoardName);
+    setBoardName(currentBoardName);
+  }, [currentBoardName, setBoardName]);
+
+  useEffect(() => {
+    console.log("NavBar component rerendered");
+  }, [currentBoardName]);
 
   const handleAvatarClick = () => {
     setIsDropdownOpen(!isDropdownOpen);
@@ -35,31 +44,16 @@ const NavBar = () => {
         />
         {session ? (
           <div className="flex items-center space-x-10 flex-1 justify-end">
-            {/* search box */}
-
-            {/* <div className=" mx-2  p-4 relative space-x-2 bg-slate-100 dark:bg-[#20212c] flex justify-center items-center rounded-lg">
-                  <img src={lightIcon} alt="sun indicating light mode" />
-
-                  <Switch
-                    checked={darkSide}
-                    onChange={handleToggle}
-                    className={`${
-                      darkSide ? "bg-[#635fc7] !important " : "bg-gray-200 !important"
-                    } relative inline-flex h-6 w-11 items-center rounded-full`}
-                  >
-                    <span
-                      className={`${
-                        darkSide ? "translate-x-6  " : "translate-x-1 "
-                      } inline-block h-4 w-4 transform rounded-full bg-white transition`}
-                    />
-                  </Switch>
-
-                  <img src={darkIcon} alt="moon indicating dark mode" />
-                </div> */}
-            <div className=" flex items-center ">
-              <h3 className="truncate max-w-[400px] text-2xl font-extrabold ml-20 font-serif">
-                {boardName}
-              </h3>
+            <div className="flex items-center">
+              {currentBoardName !==" " ? (
+                <h3 className="max-w-[400px] text-2xl font-extrabold ml-20 font-serif">
+                  {currentBoardName}
+                </h3>
+              ) : (
+                <h3 className="max-w-[400px] text-2xl font-extrabold ml-20 font-serif">
+                  Dev Plan Pro
+                </h3>
+              )}
             </div>
 
             <form className="flex items-center space-x-4 bg-white rounded-md p-2 shadow-md flex-auto md:flex-initial">

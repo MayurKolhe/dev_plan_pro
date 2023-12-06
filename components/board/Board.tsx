@@ -5,11 +5,17 @@ import { useEffect } from "react";
 import { DragDropContext, DropResult, Droppable } from "react-beautiful-dnd";
 import Column from "../column/Column";
 import { Col } from "@/typings";
+import { create } from "zustand";
 
 const Board = () => {
-  const [board, getboard, setBoardState, updateDataBase] = useBoardStore(
-    (state) => [state.board, state.getBoard, state.setBoardState, state.updateDataBase,]
-  );
+  const [board, getboard, setBoardState, updateDataBase, setIsSidePanelOpen] =
+    useBoardStore((state) => [
+      state.board,
+      state.getBoard,
+      state.setBoardState,
+      state.updateDataBase,
+      state.setIsSidePanelOpen,
+    ]);
 
   useEffect(() => {
     getboard();
@@ -46,7 +52,6 @@ const Board = () => {
 
     if (source.index === destination.index && startCol === finishCol) return;
 
-
     const newTodos = startCol.todos;
     const [todoMoved] = newTodos.splice(source.index, 1);
 
@@ -81,6 +86,10 @@ const Board = () => {
     }
   };
 
+  const handleCreateBoard = () => {
+    setIsSidePanelOpen(true);
+  };
+
   return (
     <DragDropContext onDragEnd={handleOnDragEnd}>
       <Droppable droppableId="board" direction="horizontal" type="column">
@@ -90,9 +99,25 @@ const Board = () => {
             {...provided.droppableProps}
             ref={provided.innerRef}
           >
-            {Array.from(board.columns.entries()).map(([id, column], index) => (
-              <Column key={id} id={id} todos={column.todos} index={index} />
-            ))}
+            {board.columns.size > 0 ? (
+              Array.from(board.columns.entries()).map(([id, column], index) => (
+                <Column key={id} id={id} todos={column.todos} index={index} />
+              ))
+            ) : (
+              <div className="fixed top-0 right-0 flex items-center justify-center w-full h-full">
+                <p className="text-3xl">
+                  Welcome! It seems you don`t have any boards yet.
+                </p>
+                <div className="fixed top-20 right-0 flex items-center justify-center w-full h-full">
+                  <button
+                    onClick={handleCreateBoard}
+                    className="text-[#635fc7] hover:underline cursor-pointer text-3xl"
+                  >
+                    Create New Board
+                  </button>
+                </div>
+              </div>
+            )}
           </div>
         )}
       </Droppable>

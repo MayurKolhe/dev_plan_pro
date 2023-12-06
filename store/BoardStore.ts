@@ -14,6 +14,7 @@ import { getSession } from "next-auth/react";
 interface BoardState {
   board: Board;
   boardName: string;
+  currentBoardName: string;
   boards: BoardObject[];
   searchText: string;
   image: File | null;
@@ -107,14 +108,14 @@ export const useBoardStore = create<BoardState>((set) => ({
 
   getBoard: async () => {
     const fetchedBoards = await getAllBoards();
-    set({ boards: fetchedBoards.user });
-
     if (fetchedBoards.user.length > 0) {
       const firstBoard = fetchedBoards.user[0];
       sessionStorage.setItem("boardID", fetchedBoards.user[0]._id);
       console.log("BFirst", firstBoard);
       const board = await getNotStartedGroupedByColumn();
-      set({ board });
+      set({ boards: fetchedBoards.user, board });
+    } else {
+      set({ boards: [] });
     }
   },
 
@@ -125,6 +126,7 @@ export const useBoardStore = create<BoardState>((set) => ({
   confirmCancel: false,
   deleteID: " ",
   boardName: " ",
+  currentBoardName: " ",
   setIsSidePanelOpen: (input) => set({ isSidePanelOpen: input }),
   setImage: (image) => set({ image }),
   setBoardState: (board) => set({ board }),
@@ -132,12 +134,19 @@ export const useBoardStore = create<BoardState>((set) => ({
   setModalPopUp: (input) => set({ isModalOpen: input }),
   setDeleteID: (input) => set({ deleteID: input }),
   setBoardName: (input: string) => set({ boardName: input }),
-
   setNewTaskType: (columnId) => set({ newTaskType: columnId }),
   setSelectedBoard: async (boardID) => {
     sessionStorage.setItem("boardID", boardID);
-    const board = await getNotStartedGroupedByColumn();
-    set({ board });
+    const fetchedBoards = await getAllBoards();
+    const userBoards: BoardObject[] = fetchedBoards.user;
+    const selectedBoard: BoardObject | undefined = userBoards.find(
+      (board) => board._id === boardID
+    );
+    const boardData: Board = await getNotStartedGroupedByColumn();
+    set({
+      board: boardData,
+      currentBoardName: selectedBoard ? selectedBoard.name : "",
+    });
   },
 
   setconfirmDeleteBoard: (input: boolean) => set({ confirmDeleteBoard: input }),
@@ -266,6 +275,7 @@ export const useBoardStore = create<BoardState>((set) => ({
 
     set({ board });
   },
+
   deleteBoard: async (boardID) => {
     console.log("BoardID", boardID);
     try {
@@ -279,16 +289,28 @@ export const useBoardStore = create<BoardState>((set) => ({
         }),
       });
 
-      // const responseData = await res.json();
-      // var generatedId = responseData.message[0]._id;
+     const updatedBoards = await getAllBoards();
+     if (updatedBoards.user.length === 0) {
+       // No more boards, update state accordingly
+       set({
+         boards: [],
+         board: { columns: new Map<TypedCol, Col>() },
+         currentBoardName: " ",
+       });
+     } else {
+       // User has more boards, update state with the remaining boards
+       const board = await getNotStartedGroupedByColumn();
+       set({
+         boards: updatedBoards.user,
+         board,
+         currentBoardName: updatedBoards.user[0].name,
+       });
+     }
     } catch (error) {
-      console.log("Error during registration: ", error);
+      console.error("Error during Deletion: ", error);
     }
-    const board = await getNotStartedGroupedByColumn();
-
-    set({ board });
   },
-  CreateBoard: async (boardName:string) => {
+  CreateBoard: async (boardName: string) => {
     const session = await getSession();
     try {
       const res = await fetch("api/addBoard", {
@@ -308,12 +330,19 @@ export const useBoardStore = create<BoardState>((set) => ({
       sessionStorage.setItem("boardID", boardID);
 
       const updatedBoards = await getAllBoards();
-      set({ boardName, isModalOpen: false });
-      set({ boards: updatedBoards.user, isModalOpen: false });
+      if (updatedBoards.user.length === 1) {
+        // If there was only one board, automatically select it
+        set({ boardName, currentBoardName: boardName, isModalOpen: false });
+        set({ boards: updatedBoards.user, isModalOpen: false });
 
-      // Fetch the updated columns for the current board
-      const updatedBoard = await getNotStartedGroupedByColumn();
-      set({ board: updatedBoard });
+        // Fetch the updated columns for the current board
+        const updatedBoard = await getNotStartedGroupedByColumn();
+        set({ board: updatedBoard });
+      } else {
+        // If there are multiple boards or none, do not auto-select
+        set({ boardName, isModalOpen: false });
+        set({ boards: updatedBoards.user, isModalOpen: false });
+      }
     } catch (error) {
       console.log("Error during registration: ", error);
     }
