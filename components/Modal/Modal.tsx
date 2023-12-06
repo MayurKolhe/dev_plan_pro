@@ -109,7 +109,7 @@ function Modal() {
                       width={200}
                       height={200}
                       className="w-full h-44 object-cover mt-2 filter hover:grayscale transition-all duration-150 cursor-not-allowed"
-                      onClick={() => setImage(null)}
+                      onClick={() => setImage(undefined)}
                     ></Image>
                   )}
                   <div></div>

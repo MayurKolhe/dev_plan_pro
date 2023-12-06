@@ -7,6 +7,8 @@ import {
   DraggableProvidedDragHandleProps,
   DraggableProvidedDraggableProps,
 } from "react-beautiful-dnd";
+import Image from "next/image";
+import { useEffect, useState, } from "react";
 
 type Props = {
   todo: NotStarted;
@@ -28,6 +30,19 @@ const TodoCard = ({
     id === "block" ? "bg-red-500" : id === "done" ? "bg-green-500" : "bg-white";
 
     const deleteTask = useBoardStore((state) => state.deleteTask);
+    const [imageUrl, setImageUrl] = useState<string | null>(null);
+
+    useEffect(() => {
+      if (todo.Image) {
+        const fetchImage = async () => {
+          const url = (todo.Image!);
+          if (url) {
+            setImageUrl(url.toString());
+          }
+        };
+        fetchImage();
+      }
+    }, [todo]);
 
 
   return (
@@ -44,6 +59,20 @@ const TodoCard = ({
           <XCircleIcon className="ml-5 h-8 w-8" />
         </button>
       </div>
+
+      {/* add image */}
+      {imageUrl && (
+        < div className="custom-container  relative h-full w-full rounded-b-md mt-0 mb-0 ml-0 mr-0">
+          <Image
+            src={todo.Image!}
+            alt="image"
+            width={400}
+            height={200}
+            className="w-full object-contain rounded-b-md"
+          ></Image>
+        </div>
+       )} 
+
     </div>
   );
 };

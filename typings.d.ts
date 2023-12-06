@@ -24,7 +24,7 @@ interface NotStarted {
     $id: string;
     title: string;
     status: TypedCol;
-    Image?: string;
+    Image?:  Image | undefined;
     boardID?: string |undefined;
     createdAt: string;
 }

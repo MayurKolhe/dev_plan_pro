@@ -17,7 +17,7 @@ interface BoardState {
   currentBoardName: string;
   boards: BoardObject[];
   searchText: string;
-  image: File | null;
+  image: Image | undefined ;
   newTask: string;
   newTaskType: TypedCol;
   isSidePanelOpen: boolean;
@@ -42,7 +42,7 @@ interface BoardState {
   setBoardName: (input: string) => void;
 
   setNewTaskType: (columnId: TypedCol) => void;
-  setImage: (image: File | null) => void;
+  setImage: (image: Image | undefined) => void;
 
   addTask: (todo: string, columnId: TypedCol, image?: File | null) => void;
   deleteTask: (taskIndex: number, todoId: NotStarted, id: TypedCol) => void;
@@ -53,7 +53,7 @@ interface BoardState {
 var fileResult: string;
 var boardID: string;
 
-function convertImage(fileImage: any): Promise<string | undefined> {
+function convertImage(fileImage: any): Promise<Image | undefined > {
   console.log("in convert image", fileImage);
 
   return new Promise((resolve, reject) => {
@@ -120,7 +120,7 @@ export const useBoardStore = create<BoardState>((set) => ({
   },
 
   newTaskType: "notstarted",
-  image: null,
+  image: undefined,
   confirmDeleteBoard: false,
   deleteConfirm: false,
   confirmCancel: false,
@@ -182,24 +182,87 @@ export const useBoardStore = create<BoardState>((set) => ({
       .then((data) => console.log(data))
       .catch((error) => console.error("Error updating todo:", error));
   },
+  // addTask: async (todo, columnId, image) => {
+  //   const session = await getSession();
+
+  //   let file: Image | undefined;
+  //   convertImage(image)
+  //     .then((result) => {
+  //       if (result !== undefined) {
+  //         fileResult = result;
+  //         console.log("Base64:", fileResult);
+  //       } else {
+  //         console.error("Error converting image to base64.");
+  //       }
+  //     })
+  //     .catch((error) => {
+  //       console.error("Error:", error);
+  //     });
+
+  //   try {
+  //     const res = await fetch("api/addCard", {
+  //       method: "POST",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //       },
+  //       body: JSON.stringify({
+  //         title: todo,
+  //         status: columnId,
+  //         Image: fileResult,
+  //         boardID: sessionStorage.getItem("boardID"),
+  //       }),
+  //     });
+
+  //     const responseData = await res.json();
+  //     var generatedId = responseData.message[0]._id;
+  //   } catch (error) {
+  //     console.log("Error during registration: ", error);
+  //   }
+
+  //   // update board
+  //   set({ newTask: "" });
+
+  //   set((state) => {
+  //     const newColumns = new Map(state.board.columns);
+
+  //     const newTodo: NotStarted = {
+  //       $id: generatedId,
+  //       title: todo,
+  //       status: columnId,
+  //       Image: fileResult,
+  //       boardID: sessionStorage?.getItem("boardID") as string | undefined,
+  //       createdAt: new Date().toISOString(),
+  //     };
+
+  //     const column = newColumns.get(columnId);
+
+  //     if (!column) {
+  //       newColumns.set(columnId, {
+  //         id: columnId,
+  //         todos: [newTodo],
+  //       });
+  //     } else {
+  //       newColumns.get(columnId)?.todos.push(newTodo);
+  //     }
+
+  //     return {
+  //       board: {
+  //         columns: newColumns,
+  //       },
+  //     };
+  //   });
+  // },
+
   addTask: async (todo, columnId, image) => {
     const session = await getSession();
+    console.log("Image",image)
 
-    let file: Image | undefined;
-    convertImage(image)
-      .then((result) => {
-        if (result !== undefined) {
-          fileResult = result;
-          console.log("Base64:", fileResult);
-        } else {
-          console.error("Error converting image to base64.");
-        }
-      })
-      .catch((error) => {
-        console.error("Error:", error);
-      });
-
+    // let file: Image | undefined;
+    let fileResult: Image | undefined;
     try {
+      
+      fileResult = image!==undefined ? await convertImage(image) :undefined;
+      console.log("Base64:", fileResult);
       const res = await fetch("api/addCard", {
         method: "POST",
         headers: {
@@ -216,11 +279,34 @@ export const useBoardStore = create<BoardState>((set) => ({
       const responseData = await res.json();
       var generatedId = responseData.message[0]._id;
     } catch (error) {
-      console.log("Error during registration: ", error);
+      console.error("Error converting image to base64:", error);
+      // Handle the error appropriately, e.g., show a user-friendly message.
+      return;
     }
+
+    // try {
+    //   // const res = await fetch("api/addCard", {
+    //   //   method: "POST",
+    //   //   headers: {
+    //   //     "Content-Type": "application/json",
+    //   //   },
+    //   //   body: JSON.stringify({
+    //   //     title: todo,
+    //   //     status: columnId,
+    //   //     Image: fileResult,
+    //   //     boardID: sessionStorage.getItem("boardID"),
+    //   //   }),
+    //   // });
+
+    //   // const responseData = await res.json();
+    //   // var generatedId = responseData.message[0]._id;
+    // } catch (error) {
+    //   console.log("Error during registration: ", error);
+    // }
 
     // update board
     set({ newTask: "" });
+    set({image:undefined})
 
     set((state) => {
       const newColumns = new Map(state.board.columns);
@@ -229,7 +315,7 @@ export const useBoardStore = create<BoardState>((set) => ({
         $id: generatedId,
         title: todo,
         status: columnId,
-        Image: fileResult,
+        Image: fileResult!,
         boardID: sessionStorage?.getItem("boardID") as string | undefined,
         createdAt: new Date().toISOString(),
       };
