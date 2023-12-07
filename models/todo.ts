@@ -6,6 +6,7 @@ const todoSchema = new Schema(
     title: { type: String, required: true },
     status: { type: String },
     Image: { type: String, required: false },
+    comments:{ type: String, required: false },
     boardID: { type: String}, 
   },
   { timestamps: true }
@@ -15,6 +16,7 @@ export interface Todos extends Document {
   title: string;
   status: string;
   Image: string;
+  comments:string;
   boardID: string;
 }
 

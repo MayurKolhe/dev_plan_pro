@@ -9,13 +9,15 @@ import TaskGroup from '../TaskGroup/TaskGroup';
 import { PhotoIcon } from "@heroicons/react/24/solid";
 
 function Modal() {
-  const  [image,setImage, newTask,setNewTask, newTaskType,addTask]= useBoardStore((state)=>
+  const  [image,setImage, newTask,setNewTask, newTaskType,addTask, cardComments, setCardComments]= useBoardStore((state)=>
   [ state.image,
     state.setImage,
     state.newTask,
     state.setNewTask,
     state.newTaskType,
     state.addTask,
+    state.cardComments,
+    state.setCardComments
     
   ])
   let [isOpen, closeModal] = useModalStore((state)=>
@@ -28,7 +30,7 @@ function Modal() {
 
     if (!newTask) return;
 
-    addTask(newTask, newTaskType, image);
+    addTask(newTask, newTaskType, image, cardComments);
     setImage(image);
     closeModal();
   };
@@ -91,6 +93,17 @@ function Modal() {
               </div>
               {/* radio group */}
               <TaskGroup/>
+
+              <div className='mt-2'>
+                <input
+                type="text"
+                value={cardComments}
+                onChange={(e)=>setCardComments(e.target.value) }
+                placeholder="Enter comments here ....."
+                className="w-full border border-gray-300 rounded-md outline-none p-5 mb-2"
+
+                />
+              </div>
 
                               {/* image */}
                               <div>

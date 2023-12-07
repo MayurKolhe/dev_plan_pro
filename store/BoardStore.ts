@@ -26,6 +26,7 @@ interface BoardState {
   confirmDeleteBoard: boolean;
   deleteConfirm: boolean;
   confirmCancel: boolean;
+  cardComments: string;
 
   getBoard: () => void;
   setBoardState: (bord: Board) => void;
@@ -38,13 +39,14 @@ interface BoardState {
   setconfirmDeleteBoard: (input: boolean) => void;
   setconfirmDelete: (input: boolean) => void;
   setconfirmCancel: (input: boolean) => void;
+  setCardComments:(input: string)=>void;
   setDeleteID: (input: string) => void;
   setBoardName: (input: string) => void;
 
   setNewTaskType: (columnId: TypedCol) => void;
   setImage: (image: Image | undefined) => void;
 
-  addTask: (todo: string, columnId: TypedCol, image?: File | null) => void;
+  addTask: (todo: string, columnId: TypedCol, image?: File | null, cardComments?:string) => void;
   deleteTask: (taskIndex: number, todoId: NotStarted, id: TypedCol) => void;
   deleteBoard: (boardID: string) => void;
 
@@ -103,6 +105,7 @@ export const useBoardStore = create<BoardState>((set) => ({
   newTask: "",
   isSidePanelOpen: false,
   isModalOpen: false,
+  cardComments:" ",
 
   setSearch: (searchText: string) => set({ searchText }),
 
@@ -131,6 +134,7 @@ export const useBoardStore = create<BoardState>((set) => ({
   setImage: (image) => set({ image }),
   setBoardState: (board) => set({ board }),
   setNewTask: (input: string) => set({ newTask: input }),
+  setCardComments:(input:string)=>set({cardComments: input}),
   setModalPopUp: (input) => set({ isModalOpen: input }),
   setDeleteID: (input) => set({ deleteID: input }),
   setBoardName: (input: string) => set({ boardName: input }),
@@ -174,6 +178,7 @@ export const useBoardStore = create<BoardState>((set) => ({
         createdAt: todo.createdAt,
         image: todo.Image,
         status: columnId,
+        comments:todo.comments,
         boardID: sessionStorage.getItem("boardID"),
         title: todo.title,
       }),
@@ -253,9 +258,8 @@ export const useBoardStore = create<BoardState>((set) => ({
   //   });
   // },
 
-  addTask: async (todo, columnId, image) => {
+  addTask: async (todo, columnId, image, comments) => {
     const session = await getSession();
-    console.log("Image",image)
 
     // let file: Image | undefined;
     let fileResult: Image | undefined;
@@ -272,6 +276,7 @@ export const useBoardStore = create<BoardState>((set) => ({
           title: todo,
           status: columnId,
           Image: fileResult,
+          comments:comments,
           boardID: sessionStorage.getItem("boardID"),
         }),
       });
@@ -306,6 +311,7 @@ export const useBoardStore = create<BoardState>((set) => ({
 
     // update board
     set({ newTask: "" });
+    set({ cardComments: "" });
     set({image:undefined})
 
     set((state) => {
@@ -316,6 +322,7 @@ export const useBoardStore = create<BoardState>((set) => ({
         title: todo,
         status: columnId,
         Image: fileResult!,
+        comments:comments,
         boardID: sessionStorage?.getItem("boardID") as string | undefined,
         createdAt: new Date().toISOString(),
       };
