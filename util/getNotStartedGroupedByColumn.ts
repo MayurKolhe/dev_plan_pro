@@ -42,8 +42,8 @@ export const getNotStartedGroupedByColumn = async () => {
       const { boardID,comments, createdAt, status, title,updatedAt,Image,_id } = jsonResponse;
     
       const typedColStatus = status as TypedCol; // assuming TypedCol is a valid type
+      
       const notStartedObj = { $id:jsonResponse._id, title, status: typedColStatus,updatedAt,Image,comments, boardID, createdAt };
-    
       const existingEntry = resultMap.get(typedColStatus);
     
       if (existingEntry) {
