@@ -9,12 +9,12 @@ import { use } from "react";
 export async function POST(req) {
     try {
 
-        const { title, status, Image, boardID } = await req.json();
+        const { title, status, Image, comments, boardID } = await req.json();
         var id;
-        console.log("title, status, Image, boardID",title, status, Image, boardID);
+        console.log("title, status, Image, boardID",title, status, Image, comments, boardID);
         await connectToDatabase();
 
-       const result =await Todos.insertMany({ title, status, Image, boardID});
+       const result =await Todos.insertMany({ title, status, Image,comments, boardID});
        console.log('add result', result)
        id=result.map(({ _id }) => ({ _id }));
        return NextResponse.json({ message:id}, { status: 200});

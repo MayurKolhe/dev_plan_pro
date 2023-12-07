@@ -25,6 +25,7 @@ interface NotStarted {
     title: string;
     status: TypedCol;
     Image?:  Image | undefined;
+    comments?:string;
     boardID?: string |undefined;
     createdAt: string;
 }
