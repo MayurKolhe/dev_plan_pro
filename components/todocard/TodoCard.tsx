@@ -43,7 +43,8 @@ const TodoCard = ({
         fetchImage();
       }
     }, [todo]);
-
+  
+  console.log("imageUrl", imageUrl);
 
   return (
     <div

@@ -23,8 +23,6 @@ export async function POST(req: Request) {
       },
     ],
   });
-  console.log("Response is : ", response);
-
   const responseData = response || {};
   const message = responseData.choices[0]?.message;
   if (message) {

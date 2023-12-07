@@ -44,6 +44,8 @@ export const getNotStartedGroupedByColumn = async () => {
         $id: jsonResponse._id,
         title,
         status: typedColStatus,
+        updatedAt,
+        Image,
         boardID,
         createdAt,
       };

@@ -4,6 +4,7 @@ import Users from "@/models/users";
 import Todos from "@/models/todo";
 import bcrypt from "bcryptjs";
 import { doesNotMatch } from "assert";
+import Register from "@/app/register/page";
 
 export async function POST(req) {
     try {
@@ -13,7 +14,7 @@ export async function POST(req) {
 
         await Users.create({ name, email, password: hashedPassword});
 
-        return NextResponse.json({ message: id}, { status: 201 });
+        return NextResponse.json({ message: "Register Sucessfully"}, { status: 201 });
 
     } catch (error) {
         return NextResponse.json({ message: error }, { status: 500 });
