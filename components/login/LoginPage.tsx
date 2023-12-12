@@ -14,31 +14,42 @@ export default function LoginForm() {
 
   const router = useRouter();
 
-  const handleSubmit = async (e: { preventDefault: () => void; }) => {
-    e.preventDefault();
 
-    try {
-      const res:any = await signIn("credentials", {
-        email,
-        password,
-        redirect: false,
-      });
-      if (res.error) {
-        if (!email) {
-          setError("Invalid Email");
-        } else if (!password) {
-          setError("Password is Missing");
-        } else {
-          setError("Invalid Credentials");
+
+      // const response= await fetch(`api/getEmailByUser?email=${email}`,
+      // {
+      //   method:"GET",
+      //   cache: "no-store"
+      // })
+      // console.log('rsponsone json', response.json())
+
+
+      const handleSubmit = async (e: { preventDefault: () => void; }) => {
+        e.preventDefault();
+    
+        try {
+          const res:any = await signIn("credentials", {
+            email,
+            password,
+            redirect: false,
+          });
+          if (res.error) {
+            if (!email) {
+              setError("Invalid Email");
+            } else if (!password) {
+              setError("Password is Missing");
+            } else {
+              setError("Invalid Credentials");
+            }
+            return;
+          }
+          
+          router.replace("dashboard");
+        } catch (error) {
+          console.log(error);
         }
-        return;
-      }
-      
-      router.replace("dashboard");
-    } catch (error) {
-      console.log(error);
-    }
-  };
+
+      };
 
   return (
     <div

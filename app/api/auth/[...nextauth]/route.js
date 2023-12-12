@@ -16,17 +16,16 @@ export const authOptions = {
         try {
           await connectToDatabase();
           const user = await Users.findOne({ email });
-
+          
           if (!user) {
             return null;
           }
           const passwordsMatch = await bcrypt.compare(password, user.password);
-
           if (!passwordsMatch) {
             return null;
           }
-
           return user;
+
         } catch (error) {
           console.log("Error: ", error);
         }

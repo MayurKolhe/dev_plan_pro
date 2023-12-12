@@ -2,7 +2,7 @@
 import Avatar from "react-avatar";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import Image from "next/image";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import { signOut } from "next-auth/react";
 import { useBoardStore } from "@/store/BoardStore";
@@ -10,6 +10,16 @@ import { useBoardStore } from "@/store/BoardStore";
 const NavBar = () => {
   const { data: session } = useSession();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const { currentBoardName, setBoardName } = useBoardStore();
+
+  useEffect(() => {
+    console.log("currentBoardName   ",  currentBoardName);
+    setBoardName(currentBoardName);
+  }, [currentBoardName, setBoardName]);
+
+  useEffect(() => {
+    console.log("NavBar component rerendered");
+  }, [currentBoardName]);
 
   const handleAvatarClick = () => {
     setIsDropdownOpen(!isDropdownOpen);
@@ -19,11 +29,9 @@ const NavBar = () => {
     await signOut(); // Perform the logout action using NextAuth.js
   };
   const [searchText, setSearch] = useBoardStore((state) => [
-  state.searchText,
-  state.setSearch,
-]);
-  
-  
+    state.searchText,
+    state.setSearch,
+  ]);
 
   return (
     <header>
@@ -36,7 +44,18 @@ const NavBar = () => {
         />
         {session ? (
           <div className="flex items-center space-x-10 flex-1 justify-end">
-            {/* search box */}
+            <div className="flex items-center">
+              {currentBoardName !==" " ? (
+                <h3 className="max-w-[400px] text-2xl font-extrabold ml-20 font-serif">
+                  {currentBoardName}
+                </h3>
+              ) : (
+                <h3 className="max-w-[400px] text-2xl font-extrabold ml-20 font-serif">
+                  Dev Plan Pro
+                </h3>
+              )}
+            </div>
+
             <form className="flex items-center space-x-4 bg-white rounded-md p-2 shadow-md flex-auto md:flex-initial">
               <MagnifyingGlassIcon className="h-6 w-6 text-red-400" />
               <input
@@ -44,7 +63,7 @@ const NavBar = () => {
                 placeholder="Search"
                 className="flex-1 outline-none p-3"
                 value={searchText}
-                onChange={(e)=>setSearch(e.target.value)}
+                onChange={(e) => setSearch(e.target.value)}
               />
               <button type="submit" hidden>
                 Search

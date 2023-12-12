@@ -1,13 +1,16 @@
 "use client";
 import Board from "@/components/board/Board";
 import DashBoard from "@/components/dashboard/DashBoard";
-import { use } from "react";
+import SideBar from "@/components/Sidebar/Sidebar";
 
 export default function Dashboard() {
+
   return (
     <main>
       <DashBoard />
-      <Board />
+      <SideBar/>
+       <Board />
+
     </main>
   );
 }
